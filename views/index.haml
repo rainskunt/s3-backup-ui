@@ -1,0 +1,45 @@
+!!!
+%html
+  %head
+    %title PNN Backup
+    %meta{:content => "width=device-width,initial-scale=1", :name => "viewport"}/
+    %link{href: "https://fonts.googleapis.com/icon?family=Material+Icons", rel: "stylesheet"}
+    %link{:href => "https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css", :rel => "stylesheet"}/
+    %script{:src => "https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"}
+    :css
+      ul.collection {
+        border-color: #212121;
+      }
+      .primary-content {
+        padding-right: 40px;
+      }
+      .nav-wrapper {
+        padding-left: 20px;
+      }
+  %body.grey.darken-4
+    .container.white-text
+      %h1.center-align
+        PNN BACKUP
+      %ul.collection
+        %nav.grey.darken-4
+          .nav-wrapper
+            .col.s12
+              %a.breadcrumb{href: '/'} Home
+              - breadcrumbs = params[:dir]&.split('/') || []
+              - breadcrumbs.each_with_index do |folder, i|
+                %a.breadcrumb{href: "/browse?dir=#{breadcrumbs.slice(0, i+1).join('/')}/"}
+                  = folder
+        - folders.each do |folder|
+          %a.collection-item.white-text.grey.darken-3{href: "/browse?dir=#{folder}"}
+            .secondary-content
+              %i.material-icons.white-text folder
+            .primary-content
+              %span.title
+                = folder.sub(params[:dir].to_s, '')
+        - files.each do |file|
+          %a.collection-item.white-text.grey.darken-3{href: file[:url]}
+            .secondary-content
+              %i.material-icons.white-text file_download
+            .primary-content
+              %span.title
+                = file[:key].sub(params[:dir].to_s, '')
